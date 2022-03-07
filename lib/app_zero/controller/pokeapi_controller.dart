@@ -12,9 +12,7 @@ class PokeAPIController extends GetxController {
   void onInit() {
     super.onInit();
     Map jsonDecoded;
-    HttpController.getUrl('https://pokeapi.co/api/v2/pokemon/')
-        .then((res) => {pokemons.value = PokemonList.fromJson(res.body)})
-        .whenComplete(() => update());
+    fetchPokemonList();
     scrollController.value.addListener(() {
       if (scrollController.value.position.pixels ==
           scrollController.value.position.maxScrollExtent) {
@@ -36,6 +34,12 @@ class PokeAPIController extends GetxController {
         });
       }
     });
+  }
+
+  void fetchPokemonList() {
+    HttpController.getUrl('https://pokeapi.co/api/v2/pokemon/')
+        .then((res) => {pokemons.value = PokemonList.fromJson(res.body)})
+        .whenComplete(() => update());
   }
 }
 

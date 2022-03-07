@@ -19,7 +19,8 @@ class AppZero extends StatelessWidget {
                   ? const Center(child: CircularProgressIndicator())
                   : RefreshIndicator(
                       onRefresh: () {
-                        return Future.delayed(Duration(seconds: 1));
+                        return Future.delayed(
+                            const Duration(seconds: 1), _.fetchPokemonList);
                       },
                       child: ListView(
                         controller: _.scrollController.value,
@@ -39,8 +40,10 @@ class AppZero extends StatelessWidget {
   }
 
   List<Widget> _getListItem(PokeAPIController _) {
+    var id = DateTime.now().second;
     return _.pokemons.value!.pokemonList
         .map<Widget>((item) => ExpansionTile(
+              key: Key(item.name + (id + 1).toString()),
               title: Text(item.name.capitalizeFirst!),
               children: [
                 Row(
