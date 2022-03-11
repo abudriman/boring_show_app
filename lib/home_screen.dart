@@ -31,6 +31,8 @@ class HomeScreen extends StatelessWidget {
         ),
         body: ListView(children: const [
           HomeMenuButton('/app_zero', 'Episode #0'),
+          HomeMenuButton('/sliver_list', 'Sliver List App'),
+          HomeMenuButton('/app_three', 'Episode #3'),
         ]));
   }
 }
