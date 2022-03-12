@@ -35,7 +35,8 @@ class PokemonScreen extends StatelessWidget {
                         height: Get.height * 0.5,
                         child: CachedNetworkImage(
                           imageUrl: _.pokemon.value!.sprites['other']
-                              ['official-artwork']['front_default'],
+                                  ['official-artwork']['front_default'] ??
+                              '',
                           placeholder: (context, url) =>
                               const Center(child: CircularProgressIndicator()),
                           errorWidget: (context, url, error) => Center(

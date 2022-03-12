@@ -15,11 +15,12 @@ class PokeAPIController extends GetxController {
     fetchPokemonList();
     scrollController.value.addListener(() {
       if (scrollController.value.position.pixels ==
-          scrollController.value.position.maxScrollExtent) {
+              scrollController.value.position.maxScrollExtent &&
+          pokemons.value!.next != null) {
         isLoading.value = true;
         update();
         Future.delayed(const Duration(milliseconds: 300), () {
-          HttpController.getUrl(pokemons.value!.next)
+          HttpController.getUrl(pokemons.value!.next!)
               .then((res) => {
                     jsonDecoded = json.decode(res.body),
                     pokemons.value = pokemons.value!
@@ -45,7 +46,7 @@ class PokeAPIController extends GetxController {
 
 class PokemonList {
   final int count;
-  final String next;
+  final String? next;
   final String previous;
   final List<PokemonListItem> pokemonList;
 
@@ -63,7 +64,7 @@ class PokemonList {
   factory PokemonList.fromMap(Map<String, dynamic> map) {
     return PokemonList(
       map['count']?.toInt() ?? 0,
-      map['next'] ?? '',
+      map['next'],
       map['previous'] ?? '',
       List<PokemonListItem>.from(
           map['results']?.map((x) => PokemonListItem.fromMap(x))),
@@ -82,7 +83,7 @@ class PokemonList {
       List<PokemonListItem>? pokemonList}) {
     return PokemonList(
       count ?? this.count,
-      next ?? this.next,
+      next,
       previous ?? this.previous,
       pokemonList ?? this.pokemonList,
     );
