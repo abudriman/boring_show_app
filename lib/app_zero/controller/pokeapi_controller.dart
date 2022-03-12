@@ -92,13 +92,15 @@ class PokemonList {
 class PokemonListItem {
   final String name;
   final String url;
+  final String id;
 
-  PokemonListItem(this.name, this.url);
+  PokemonListItem(this.name, this.url, this.id);
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'url': url,
+      'id': id,
     };
   }
 
@@ -106,6 +108,7 @@ class PokemonListItem {
     return PokemonListItem(
       map['name'] ?? '',
       map['url'] ?? '',
+      map['url'].substring(34).replaceAll('/', '') ?? '',
     );
   }
 

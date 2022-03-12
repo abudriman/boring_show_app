@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+
 import '../controller/controller.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 
 class AppZero extends StatelessWidget {
@@ -39,12 +42,29 @@ class AppZero extends StatelessWidget {
     );
   }
 
+  String iconBaseUrl(id) {
+    return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
+  }
+
   List<Widget> _getListItem(PokeAPIController _) {
-    var id = DateTime.now().second;
     return _.pokemons.value!.pokemonList
-        .map<Widget>((item) => ExpansionTile(
-              key: Key(item.name + (id + 1).toString()),
-              title: Text(item.name.capitalizeFirst!),
+        .mapIndexed<Widget>((index, item) => ExpansionTile(
+              key: Key(index.toString()),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(item.name.capitalizeFirst!),
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CachedNetworkImage(
+                      imageUrl: iconBaseUrl(item.id),
+                      errorWidget: (context, url, error) =>
+                          CachedNetworkImage(imageUrl: iconBaseUrl(0)),
+                    ),
+                  )
+                ],
+              ),
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -38,8 +38,9 @@ class _AppThreeState extends State<AppThree> {
                               Text(article.type!),
                               IconButton(
                                 onPressed: () async {
-                                  if (!await launch(article.url!))
+                                  if (!await launch(article.url!)) {
                                     throw 'Could not launch ${article.url}';
+                                  }
                                 },
                                 icon: const Icon(Icons.launch),
                               )
