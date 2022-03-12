@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:boring_show_app/hacker_news/article.dart';
@@ -16,18 +17,19 @@ class AppThree extends StatefulWidget {
 
 class _AppThreeState extends State<AppThree> {
   final HackerNewsBloc hnBloc = HackerNewsBloc();
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('App Three'),
+        title: const Text('Hacker News'),
       ),
       body: StreamBuilder<UnmodifiableListView<Article>>(
         stream: hnBloc.articles,
         initialData: UnmodifiableListView<Article>([]),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (hnBloc.isLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return ListView(
@@ -58,6 +60,29 @@ class _AppThreeState extends State<AppThree> {
               }).toList(),
             );
           }
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _index,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_drop_up),
+            label: 'Top Stories',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.new_releases),
+            label: 'New Stories',
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _index = index;
+            if (index == 0) {
+              hnBloc.storiesType.add(StoriesType.topStories);
+            } else {
+              hnBloc.storiesType.add(StoriesType.newStories);
+            }
+          });
         },
       ),
     );
