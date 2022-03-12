@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:boring_show_app/routes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,11 +30,11 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
-        body: ListView(children: const [
-          HomeMenuButton('/app_zero', 'Episode #0'),
-          HomeMenuButton('/sliver_list', 'Sliver List App'),
-          HomeMenuButton('/app_three', 'Episode #3'),
-        ]));
+        body: ListView(
+            children: routeMap
+                .map((element) =>
+                    HomeMenuButton(element['route'], element['text']))
+                .toList()));
   }
 }
 
