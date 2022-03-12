@@ -1,4 +1,4 @@
-import 'package:boring_show_app/app_three/screens/screens.dart';
+import 'package:boring_show_app/hacker_news/screens/screens.dart';
 import 'package:get/get.dart';
 
 var appThreeRoutes = [

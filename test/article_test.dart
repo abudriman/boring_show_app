@@ -1,4 +1,4 @@
-import 'package:boring_show_app/app_three/article.dart';
+import 'package:boring_show_app/hacker_news/article.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:boring_show_app/util/http_helper.dart';
@@ -24,7 +24,7 @@ void main() {
           final storyUrl = baseUrl + '/item/${idList[0]}.json';
           final storyRes = await HttpController.getUrl(storyUrl) as Response;
           if (storyRes.statusCode == 200) {
-            expect(Article.fromJson(storyRes.body).by, 'davidbarker');
+            expect(Article.fromJson(storyRes.body), isNotNull);
           }
         }
       }
