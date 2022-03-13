@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:boring_show_app/hacker_news/article.dart';
 
@@ -17,21 +17,21 @@ class AppThree extends StatefulWidget {
 
 class _AppThreeState extends State<AppThree> {
   final HackerNewsBloc hnBloc = HackerNewsBloc();
-  int _index = 0;
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hacker News'),
+        leading: LoadingInfo(hnBloc: hnBloc),
+        centerTitle: true,
       ),
       body: StreamBuilder<UnmodifiableListView<Article>>(
         stream: hnBloc.articles,
         initialData: UnmodifiableListView<Article>([]),
         builder: (context, snapshot) {
-          if (hnBloc.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
+          if (snapshot.hasData) {
             return ListView(
               children: snapshot.data!.map((article) {
                 return Padding(
@@ -60,10 +60,11 @@ class _AppThreeState extends State<AppThree> {
               }).toList(),
             );
           }
+          return const Center(child: CircularProgressIndicator());
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
+        currentIndex: _currentIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.arrow_drop_up),
@@ -76,7 +77,7 @@ class _AppThreeState extends State<AppThree> {
         ],
         onTap: (index) {
           setState(() {
-            _index = index;
+            _currentIndex = index;
             if (index == 0) {
               hnBloc.storiesType.add(StoriesType.topStories);
             } else {
@@ -92,5 +93,52 @@ class _AppThreeState extends State<AppThree> {
   void dispose() {
     hnBloc.dispose();
     super.dispose();
+  }
+}
+
+class LoadingInfo extends StatefulWidget {
+  const LoadingInfo({
+    Key? key,
+    required this.hnBloc,
+  }) : super(key: key);
+
+  final HackerNewsBloc hnBloc;
+
+  @override
+  State<LoadingInfo> createState() => _LoadingInfoState();
+}
+
+class _LoadingInfoState extends State<LoadingInfo>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<bool>(
+      stream: widget.hnBloc.isLoading,
+      builder: (context, snapshot) {
+        _controller.forward().then((value) => _controller.reverse());
+        // if (snapshot.hasData && snapshot.data!) {
+        return Center(
+          child: FadeTransition(
+            opacity: Tween(begin: 0.3, end: 1.0).animate(
+                CurvedAnimation(parent: _controller, curve: Curves.easeInOut)),
+            child: const FaIcon(FontAwesomeIcons.hackerNews),
+          ),
+        );
+        // } else {
+        //   return const SizedBox.shrink();
+        // }
+      },
+    );
   }
 }

@@ -13,34 +13,31 @@ enum StoriesType { topStories, newStories }
 class HackerNewsBloc {
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
   Sink<StoriesType> get storiesType => _storiesTypeController.sink;
+  Stream<bool> get isLoading => _isLoadingSubject.stream;
 
+  final _isLoadingSubject = BehaviorSubject<bool>.seeded(false);
   final _storiesTypeController = StreamController<StoriesType>();
   final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
   final _baseUrl = 'https://hacker-news.firebaseio.com/v0';
   var _articles = <Article>[];
-  var isLoading = true;
 
   HackerNewsBloc() {
     log('HackerNewsBloc created');
-    _getIds('topstories').then((_) {
-      _articlesSubject.add(UnmodifiableListView(_articles));
-      isLoading = false;
-    });
-
+    _getArticlesAndUpdate('topstories');
     _storiesTypeController.stream.listen((storiesType) {
-      isLoading = true;
       if (storiesType == StoriesType.newStories) {
-        _getIds('newstories').then((_) {
-          _articlesSubject.add(UnmodifiableListView(_articles));
-          isLoading = false;
-        });
+        _getArticlesAndUpdate('newstories');
       } else {
-        _getIds('topstories').then((_) {
-          _articlesSubject.add(UnmodifiableListView(_articles));
-          isLoading = false;
-        });
+        _getArticlesAndUpdate('topstories');
       }
     });
+  }
+
+  Future _getArticlesAndUpdate(String stories) async {
+    _isLoadingSubject.add(true);
+    await _getIds(stories);
+    _articlesSubject.add(UnmodifiableListView(_articles));
+    _isLoadingSubject.add(false);
   }
 
   Future _getIds(String stories) async {
