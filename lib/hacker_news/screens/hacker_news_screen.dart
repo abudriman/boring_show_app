@@ -141,4 +141,10 @@ class _LoadingInfoState extends State<LoadingInfo>
       },
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 }

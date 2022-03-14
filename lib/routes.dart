@@ -3,6 +3,7 @@ import './home_screen.dart';
 import 'package:boring_show_app/app_zero/routes.dart';
 import 'package:boring_show_app/sliver_list/routes.dart';
 import 'package:boring_show_app/hacker_news/routes.dart';
+import 'package:boring_show_app/wordle/routes.dart';
 import './tic_tac/routes.dart';
 
 var routes = [
@@ -11,6 +12,7 @@ var routes = [
   ...sliverListRoutes,
   ...appThreeRoutes,
   ...ticTacRoutes,
+  ...wordleRoute,
 ];
 
 List<Map> routeMap = [
@@ -30,4 +32,8 @@ List<Map> routeMap = [
     'route': '/tic_tac',
     'text': 'Unbeatable Tic Tac Toe',
   },
+  {
+    'route': '/wordle',
+    'text': 'Wordle',
+  }
 ];
