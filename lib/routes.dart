@@ -4,6 +4,7 @@ import 'package:boring_show_app/app_zero/routes.dart';
 import 'package:boring_show_app/sliver_list/routes.dart';
 import 'package:boring_show_app/hacker_news/routes.dart';
 import 'package:boring_show_app/wordle/routes.dart';
+import 'package:boring_show_app/animations_app/routes.dart';
 import './tic_tac/routes.dart';
 
 var routes = [
@@ -13,6 +14,7 @@ var routes = [
   ...appThreeRoutes,
   ...ticTacRoutes,
   ...wordleRoute,
+  ...animationsAppRoute,
 ];
 
 List<Map> routeMap = [
@@ -35,5 +37,9 @@ List<Map> routeMap = [
   {
     'route': '/wordle',
     'text': 'Wordle',
+  },
+  {
+    'route': '/animations_app',
+    'text': 'Animations',
   }
 ];
