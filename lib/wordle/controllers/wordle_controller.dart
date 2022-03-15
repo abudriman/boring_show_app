@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:get/get.dart';
@@ -56,21 +57,22 @@ class WordleController extends GetxController {
           .elementAt(math.Random().nextInt(wordlePossibleAnswers.length));
     }
     currentWord.value = current;
+    log(currentWord.value);
     wordHistory.value.add(current);
     box.write('wordHistory', wordHistory.value);
   }
 
   bool evaluate() {
+    if (guessCount.value > 6 || isFinish.value || charCount.value != 5) {
+      return false;
+    }
     String submit = '';
     for (int i = 0; i < 5; i++) {
       submit += guessHistory.value[guessCount.value][i]['char'];
     }
     submit = submit;
-    if (charCount.value == 5 &&
-        guessCount.value <= 6 &&
-        !isFinish.value &&
-        (wordlePossibleGuesses[submit.toLowerCase()] == 1 ||
-            wordlePossibleAnswers[submit.toLowerCase()] == 1)) {
+    if (wordlePossibleGuesses[submit.toLowerCase()] == 1 ||
+        wordlePossibleAnswers[submit.toLowerCase()] == 1) {
       List answer = currentWord.value.toUpperCase().split('');
 
       for (int i = 0; i < 5; i++) {
@@ -99,6 +101,7 @@ class WordleController extends GetxController {
       charCount.value = 0;
       if (submit == currentWord.value.toUpperCase()) {
         isWinning.value = true;
+        isFinish.value = true;
       }
       if (guessCount.value == 6) {
         isFinish.value = true;
