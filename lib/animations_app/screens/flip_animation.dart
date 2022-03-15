@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class FlipAnimation extends StatefulWidget {
   const FlipAnimation({Key? key}) : super(key: key);
@@ -44,7 +43,9 @@ class _FlipAnimationState extends State<FlipAnimation>
                   transform: Matrix4.identity()
                     ..setEntry(3, 2, 0.001)
                     ..rotateX(_controller.value * pi),
-                  child: _controller.value < 0.5 ? FrontWidget() : BackWidget(),
+                  child: _controller.value < 0.5
+                      ? const FrontWidget()
+                      : const BackWidget(),
                 );
               },
             ),
@@ -54,9 +55,6 @@ class _FlipAnimationState extends State<FlipAnimation>
               child: ElevatedButton(
                   // ignore: avoid_print
                   onPressed: () {
-                    _controller.addListener(() {
-                      print(_controller.value);
-                    });
                     if (_controller.value < 0.5) {
                       _controller.forward();
                     } else {

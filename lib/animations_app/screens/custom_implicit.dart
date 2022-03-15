@@ -15,7 +15,7 @@ class _CustomImplicitState extends State<CustomImplicit> {
     //animating icon with Tween
     return Scaffold(
       appBar: AppBar(
-        title: Text('Custom Implicit Animation'),
+        title: const Text('Custom Implicit Animation'),
       ),
       body: Center(
         child: TweenAnimationBuilder(

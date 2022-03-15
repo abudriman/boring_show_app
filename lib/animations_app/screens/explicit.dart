@@ -22,7 +22,7 @@ class _ExplicitState extends State<Explicit>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Explicit Animation'),
+        title: const Text('Explicit Animation'),
       ),
       body: Center(
         child: RotationTransition(
